@@ -56,15 +56,27 @@ function CryptoPrices() {
     }, [fetchPrices]);
 
     return (
-        <div>
-            <h3>Crypto Prices</h3>
-            <ul>
-                <li><strong>ELYS-NETWORK:</strong> {prices["elys-network"]?.usd ?? "Loading..."} USD</li>
-                <li><strong>PLUME:</strong> {prices.plume?.usd ?? "Loading..."} USD</li>
-                <li><strong>BLAST:</strong> {prices.blast?.usd ?? "Loading..."} USD</li>
-                <li><strong>NOTCOIN:</strong> {prices.notcoin?.usd ?? "Loading..."} USD</li>
-                <li><strong>MOVEMENT:</strong> {prices.movement?.usd ?? "Loading..."} USD</li>
-                <li><strong>MANTRA:</strong> {prices["mantra-dao"]?.usd ?? "Loading..."} USD</li>
+        <div className="max-w-lg mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-lg">
+            <h3 className="text-xl font-bold text-green-400 mb-4 text-center">Crypto Prices</h3>
+            <ul className="space-y-2">
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">ELYS-NETWORK:</span> <span>{prices["elys-network"]?.usd ?? "Loading..."} USD</span>
+                </li>
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">PLUME:</span> <span>{prices.plume?.usd ?? "Loading..."} USD</span>
+                </li>
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">BLAST:</span> <span>{prices.blast?.usd ?? "Loading..."} USD</span>
+                </li>
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">NOTCOIN:</span> <span>{prices.notcoin?.usd ?? "Loading..."} USD</span>
+                </li>
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">MOVEMENT:</span> <span>{prices.movement?.usd ?? "Loading..."} USD</span>
+                </li>
+                <li className="p-3 bg-gray-800 rounded-lg flex justify-between">
+                    <span className="font-semibold">MANTRA:</span> <span>{prices["mantra-dao"]?.usd ?? "Loading..."} USD</span>
+                </li>
             </ul>
         </div>
     );
