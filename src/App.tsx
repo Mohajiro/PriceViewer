@@ -28,8 +28,19 @@ function App(): JSX.Element {
     const fetchPrices = async () => {
         try {
             const response = await axios.get(COINGECKO_API_URL);
-            setPrices(response.data);
-            setHistory(prev => [...prev.slice(-9), { time: new Date().toLocaleTimeString(), ...response.data }]);
+
+            // Преобразуем данные API в правильный формат
+            const formattedData: PricesType = {
+                "elys-network": response.data["elys-network"]?.usd ?? null,
+                plume: response.data.plume?.usd ?? null,
+                blast: response.data.blast?.usd ?? null,
+                notcoin: response.data.notcoin?.usd ?? null,
+                movement: response.data.movement?.usd ?? null,
+                "mantra-dao": response.data["mantra-dao"]?.usd ?? null
+            };
+
+            setPrices(formattedData);
+            setHistory(prev => [...prev.slice(-9), { time: new Date().toLocaleTimeString(), ...formattedData }]);
         } catch (error) {
             console.error("Ошибка при получении цены криптовалют:", error);
         }
@@ -58,12 +69,12 @@ function App(): JSX.Element {
             <div className="w-full max-w-6xl p-8 bg-gray-800 rounded-lg shadow-lg text-center">
                 <h1 className="text-3xl font-bold text-green-400 mb-6">Crypto Dashboard</h1>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-lg">
-                    <p><strong>ELYS-NETWORK:</strong> {prices["elys-network"] ?? "Loading..."} USD</p>
-                    <p><strong>PLUME:</strong> {prices.plume ?? "Loading..."} USD</p>
-                    <p><strong>BLAST:</strong> {prices.blast ?? "Loading..."} USD</p>
-                    <p><strong>NOTCOIN:</strong> {prices.notcoin ?? "Loading..."} USD</p>
-                    <p><strong>MOVEMENT:</strong> {prices.movement ?? "Loading..."} USD</p>
-                    <p><strong>MANTRA:</strong> {prices["mantra-dao"] ?? "Loading..."} USD</p>
+                    <p><strong>ELYS-NETWORK:</strong> {prices["elys-network"] !== null ? `${prices["elys-network"]} USD` : "Loading..."}</p>
+                    <p><strong>PLUME:</strong> {prices.plume !== null ? `${prices.plume} USD` : "Loading..."}</p>
+                    <p><strong>BLAST:</strong> {prices.blast !== null ? `${prices.blast} USD` : "Loading..."}</p>
+                    <p><strong>NOTCOIN:</strong> {prices.notcoin !== null ? `${prices.notcoin} USD` : "Loading..."}</p>
+                    <p><strong>MOVEMENT:</strong> {prices.movement !== null ? `${prices.movement} USD` : "Loading..."}</p>
+                    <p><strong>MANTRA:</strong> {prices["mantra-dao"] !== null ? `${prices["mantra-dao"]} USD` : "Loading..."}</p>
                 </div>
                 <div className="w-full mt-8">
                     <Line data={data} />
