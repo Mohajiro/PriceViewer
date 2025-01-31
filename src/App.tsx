@@ -3,35 +3,57 @@ import axios from "axios";
 
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=elys-network,plume,blast,notcoin,movement,mantra-dao&vs_currencies=usd";
 
-function CryptoPrices() {
-    const [prices, setPrices] = useState({});
-    const intervalRef = useRef<NodeJS.Timeout | null>(null); // Ссылка на интервал
+type PricesType = {
+    "elys-network": { usd: number } | null;
+    plume: { usd: number } | null;
+    blast: { usd: number } | null;
+    notcoin: { usd: number } | null;
+    movement: { usd: number } | null;
+    "mantra-dao": { usd: number } | null;
+};
 
-    // Обернем fetchPrices в useCallback, чтобы ссылка на функцию не менялась
+function CryptoPrices() {
+    const [prices, setPrices] = useState<PricesType>({
+        "elys-network": null,
+        plume: null,
+        blast: null,
+        notcoin: null,
+        movement: null,
+        "mantra-dao": null
+    });
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
     const fetchPrices = useCallback(async () => {
         try {
             const response = await axios.get(API_URL);
-            setPrices(response.data);
+            const formattedData: PricesType = {
+                "elys-network": response.data["elys-network"] ?? null,
+                plume: response.data.plume ?? null,
+                blast: response.data.blast ?? null,
+                notcoin: response.data.notcoin ?? null,
+                movement: response.data.movement ?? null,
+                "mantra-dao": response.data["mantra-dao"] ?? null
+            };
+            setPrices(formattedData);
         } catch (error) {
             console.error("Ошибка при получении цены криптовалют:", error);
         }
     }, []);
 
     useEffect(() => {
-        fetchPrices(); // Первый запрос сразу
-
-        // Если интервал уже есть, то не создаем новый
+        fetchPrices();
+        
         if (!intervalRef.current) {
-            intervalRef.current = setInterval(fetchPrices, 60000); // Запуск раз в минуту
+            intervalRef.current = setInterval(fetchPrices, 60000);
         }
 
         return () => {
             if (intervalRef.current) {
-                clearInterval(intervalRef.current); // Очищаем интервал при размонтировании
+                clearInterval(intervalRef.current);
                 intervalRef.current = null;
             }
         };
-    }, [fetchPrices]); // Зависимость на fetchPrices (но useCallback предотвращает лишние вызовы)
+    }, [fetchPrices]);
 
     return (
         <div>
