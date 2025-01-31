@@ -1,26 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 
 const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=elys-network,plume,blast,notcoin,movement,mantra-dao&vs_currencies=usd";
 
 function CryptoPrices() {
     const [prices, setPrices] = useState({});
+    const intervalRef = useRef<NodeJS.Timeout | null>(null); // Ссылка на интервал
 
-    const fetchPrices = async () => {
+    // Обернем fetchPrices в useCallback, чтобы ссылка на функцию не менялась
+    const fetchPrices = useCallback(async () => {
         try {
             const response = await axios.get(API_URL);
             setPrices(response.data);
         } catch (error) {
             console.error("Ошибка при получении цены криптовалют:", error);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        fetchPrices(); 
+        fetchPrices(); // Первый запрос сразу
 
-        const interval = setInterval(fetchPrices, 60000); 
-        return () => clearInterval(interval); 
-    }, []);
+        // Если интервал уже есть, то не создаем новый
+        if (!intervalRef.current) {
+            intervalRef.current = setInterval(fetchPrices, 60000); // Запуск раз в минуту
+        }
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current); // Очищаем интервал при размонтировании
+                intervalRef.current = null;
+            }
+        };
+    }, [fetchPrices]); // Зависимость на fetchPrices (но useCallback предотвращает лишние вызовы)
 
     return (
         <div>
