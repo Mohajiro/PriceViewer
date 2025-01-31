@@ -65,7 +65,7 @@ function App(): JSX.Element {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+        <div className="flex items-center justify-center h-screen w-screen bg-gray-900 text-white">
             <div className="w-full max-w-6xl p-8 bg-gray-800 rounded-lg shadow-lg text-center">
                 <h1 className="text-3xl font-bold text-green-400 mb-6">Crypto Dashboard</h1>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-lg">
