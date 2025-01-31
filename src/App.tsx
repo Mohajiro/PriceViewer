@@ -16,11 +16,10 @@ function CryptoPrices() {
     };
 
     useEffect(() => {
-        fetchPrices(); // Первый запрос сразу при загрузке страницы
+        fetchPrices(); 
 
-        const interval = setInterval(fetchPrices, 60000); // Обновление каждую минуту (60 000 мс)
-
-        return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
+        const interval = setInterval(fetchPrices, 60000); 
+        return () => clearInterval(interval); 
     }, []);
 
     return (
