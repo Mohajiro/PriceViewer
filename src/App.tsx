@@ -48,7 +48,7 @@ function App(): JSX.Element {
 
     useEffect(() => {
         fetchPrices();
-        const interval = setInterval(fetchPrices, 600); 
+        const interval = setInterval(fetchPrices, 6000); 
         return () => clearInterval(interval);
     }, []);
 
