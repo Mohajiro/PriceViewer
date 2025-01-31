@@ -48,7 +48,7 @@ function App(): JSX.Element {
 
     useEffect(() => {
         fetchPrices();
-        const interval = setInterval(fetchPrices, 600000); // Обновляем каждые 10 минут
+        const interval = setInterval(fetchPrices, 600); 
         return () => clearInterval(interval);
     }, []);
 
